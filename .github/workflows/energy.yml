@@ -1,0 +1,30 @@
+---
+
+name: nodejs CI
+
+on:
+  push:
+    branches:
+      - main
+
+    paths:
+      - "app/**"
+      - ".github/workflows/energy.yml"
+
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+      - name: build a docker file 
+        run: |
+          cd app/
+          docker build -t energy .
+      - name: run the container
+        run: |
+          docker run -d --name energy-container energy
+      - name: docker ps
+        run: |
+          docker ps
